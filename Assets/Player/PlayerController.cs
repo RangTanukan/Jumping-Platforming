@@ -53,4 +53,19 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
         }
     }
+
+        public void ApplySpeedBoost(float multiplier, float duration)
+        {
+            StartCoroutine(SpeedBoostRoutine(multiplier, duration));
+        }
+
+        IEnumerator SpeedBoostRoutine(float multiplier, float duration)
+        {
+            speed *= multiplier;
+
+            yield return new WaitForSeconds(duration);
+            
+            speed /= multiplier;
+        }
+        
 }
