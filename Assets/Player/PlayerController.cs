@@ -7,11 +7,14 @@ public class PlayerController : MonoBehaviour
     public float speed = 5f;
     public float jumpForce = 10f;
     private bool isGrounded;
+    public int maxHealth = 3;
+    private int currentHealth;
     private Rigidbody2D rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth; 
     }
 
     void Update()
@@ -44,6 +47,11 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
+        
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(); 
+        }
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -52,6 +60,23 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+    
+    void TakeDamage() // Add this method.
+    {
+        currentHealth--;
+
+        // Check for game over.
+        if (currentHealth <= 0)
+        {
+            GameOver();
+        }
+    }
+
+    void GameOver() 
+    { 
+        Debug.Log("Game Over");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
         public void ApplySpeedBoost(float multiplier, float duration)
